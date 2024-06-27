@@ -60,7 +60,7 @@ def txt_to_txt(prompt, num_results=1, model='gemini-1.5-flash'):
 
 ########## image -> text ################################################################################################
 
-def img_to_txt(prompt,image_path, model='gemini-1.0-pro-vision'):
+def img_to_txt(prompt,image_path, model='gemini-1.5-flash-001'):
 
     '''
     Arguments:

@@ -1,7 +1,10 @@
 # Description: This file contains all the functions that are used in the pipeline to generate content for the business
 
 # importing base utilities from basic_utilities.py
-import basic_utilities as basic
+from .basic_utilities import txt_to_img
+from .basic_utilities import txt_to_json
+from .basic_utilities import img_to_txt
+from .basic_utilities import txt_to_txt
 
 ##############################################################################################################################
 #   |  Use-case     |             function name              |                           Application                         #
@@ -55,7 +58,7 @@ def interpret_image_with_AI(prompt, image_path):
     During post creation, interpret image into text and then forward that text to generate post description
     '''
 
-    return basic.img_to_txt(prompt, image_path)
+    return img_to_txt(prompt, image_path)
 
 ##############################################################################################################################
 # ------------------------------------------------------- TEXT REFINEMENT -------------------------------------------------- #
@@ -76,7 +79,7 @@ def enhance_business_overview_with_AI(prompt,**kwargs):
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_txt(prompt)
+    return txt_to_txt(prompt)
 
 def enhance_post_caption_with_AI(prompt,**kwargs):
 
@@ -93,7 +96,7 @@ def enhance_post_caption_with_AI(prompt,**kwargs):
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_txt(prompt)
+    return txt_to_txt(prompt)
 
 ##############################################################################################################################
 # --------------------------------------------------- IMAGE PROMPT GENERATION ---------------------------------------------- #
@@ -115,8 +118,12 @@ def suggest_AI_img_prompt_for_profile_gallery(prompt, number_of_prompts, **kwarg
     '''
 
     prompt = prompt.format(**kwargs, number_of_prompts=number_of_prompts)
-    json_out = basic.txt_to_json(basic.txt_to_txt(prompt, number_of_prompts))
-    return json_out['prompts']
+    json_out = txt_to_json(txt_to_txt(prompt, number_of_prompts))
+    try:
+        final = json_out['prompts']
+    except:
+        final = ['No prompts generated']
+    return final
 
 def suggest_AI_img_prompt_for_profile_logo(prompt, number_of_prompts, **kwargs):
 
@@ -134,7 +141,7 @@ def suggest_AI_img_prompt_for_profile_logo(prompt, number_of_prompts, **kwargs):
     '''
 
     prompt = prompt.format(**kwargs, number_of_prompts=number_of_prompts)
-    json_out = basic.txt_to_json(basic.txt_to_txt(prompt, number_of_prompts))
+    json_out = txt_to_json(txt_to_txt(prompt, number_of_prompts))
     return json_out['prompts']
 
 def suggest_AI_img_prompt_for_post(prompt, **kwargs):
@@ -152,7 +159,7 @@ def suggest_AI_img_prompt_for_post(prompt, **kwargs):
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_txt(prompt)
+    return txt_to_txt(prompt)
 
 ##############################################################################################################################
 # ------------------------------------------------------- IMAGE GENERATION ------------------------------------------------- #
@@ -175,7 +182,7 @@ def enhance_profile_gallery_with_AI(prompt, gcp_project_id, file_path, **kwargs)
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_img(prompt, gcp_project_id, file_path)
+    return txt_to_img(prompt, gcp_project_id, file_path)
 
 def enhance_profile_logo_with_AI(prompt, gcp_project_id, file_path, **kwargs):
 
@@ -194,7 +201,7 @@ def enhance_profile_logo_with_AI(prompt, gcp_project_id, file_path, **kwargs):
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_img(prompt, gcp_project_id, file_path)
+    return txt_to_img(prompt, gcp_project_id, file_path)
 
 def enhance_post_img_with_AI(prompt, gcp_project_id, file_path, **kwargs):
 
@@ -214,7 +221,7 @@ def enhance_post_img_with_AI(prompt, gcp_project_id, file_path, **kwargs):
     '''
 
     prompt = prompt.format(**kwargs)
-    return basic.txt_to_img(prompt, gcp_project_id, file_path)
+    return txt_to_img(prompt, gcp_project_id, file_path)
 
 ##############################################################################################################################
 # ------------------------------------------------ x - x - x - x - x - x --------------------------------------------------- #
